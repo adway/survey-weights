@@ -66,8 +66,8 @@ cols <- c("last.attempt", "panic.onset", "agoraphobia.onset", "specific.phobia.o
 ncs.sub[cols] <- lapply(ncs.sub[cols], as.numeric)
 
 # Remove people with missing data on suicide attempts
-length(which(ncs.sub$attempt==0 & is.na(ncs.sub$last.attempt)==FALSE)) # -- Check for people who DIDN'T attempt suicide but DO have an age of last attempt. None.
-length(which(ncs.sub$attempt==1 & is.na(ncs.sub$last.attempt)==TRUE)) # -- Check for people who DID attempt but DON'T have an age of last attempt. 58.
+length(which(ncs.sub$attempt==0 & !is.na(ncs.sub$last.attempt))) # -- Check for people who DIDN'T attempt suicide but DO have an age of last attempt. None.
+length(which(ncs.sub$attempt==1 & is.na(ncs.sub$last.attempt))) # -- Check for people who DID attempt but DON'T have an age of last attempt. 58.
 
 
 
