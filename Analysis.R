@@ -37,6 +37,34 @@ cols <- c("attempt", "panic", "agoraphobia", "specific.phobia", "social.phobia",
 ncs.sub[cols] <- lapply(ncs.sub[cols], factor)
 ncs.sub$attempt <- factor(ncs.sub$attempt)
 
+# Numeric/continuous variables -- recode less than 4
+ncs.sub$panic.onset <- as.character(ncs.sub$panic.onset)
+ncs.sub$panic.onset[ncs.sub$panic.onset=="4 OR LESS"] <- "4"
+ncs.sub$agoraphobia.onset <- as.character(ncs.sub$agoraphobia.onset)
+ncs.sub$agoraphobia.onset[ncs.sub$agoraphobia.onset=="4 OR LESS"] <- "4"
+ncs.sub$specific.phobia.onset <- as.character(ncs.sub$specific.phobia.onset)
+ncs.sub$specific.phobia.onset[ncs.sub$specific.phobia.onset=="4 OR LESS"] <- "4"
+ncs.sub$social.phobia.onset <- as.character(ncs.sub$social.phobia.onset)
+ncs.sub$social.phobia.onset[ncs.sub$social.phobia.onset=="4 OR LESS"] <- "4"
+ncs.sub$ptsd.onset <- as.character(ncs.sub$ptsd.onset)
+ncs.sub$ptsd.onset[ncs.sub$ptsd.onset=="4 OR LESS"] <- "4"
+ncs.sub$gad.onset <- as.character(ncs.sub$gad.onset)
+ncs.sub$gad.onset[ncs.sub$gad.onset=="4 OR LESS"] <- "4"
+ncs.sub$mdd.onset <- as.character(ncs.sub$mdd.onset)
+ncs.sub$mdd.onset[ncs.sub$mdd.onset=="4 OR LESS"] <- "4"
+ncs.sub$alcohol.abuse.onset <- as.character(ncs.sub$alcohol.abuse.onset)
+ncs.sub$alcohol.abuse.onset[ncs.sub$alcohol.abuse.onset=="4 OR LESS"] <- "4"
+ncs.sub$alcohol.dep.onset <- as.character(ncs.sub$alcohol.dep.onset)
+ncs.sub$alcohol.dep.onset[ncs.sub$alcohol.dep.onset=="4 OR LESS"] <- "4"
+ncs.sub$drug.abuse.onset <- as.character(ncs.sub$drug.abuse.onset)
+ncs.sub$drug.abuse.onset[ncs.sub$drug.abuse.onset=="4 OR LESS"] <- "4"
+ncs.sub$drug.dep.onset <- as.character(ncs.sub$drug.dep.onset)
+ncs.sub$drug.dep.onset[ncs.sub$drug.dep.onset=="4 OR LESS"] <- "4"
+
+# Numeric these recoded numeric variables + weights
+cols <- c("last.attempt", "panic.onset", "agoraphobia.onset", "specific.phobia.onset", "social.phobia.onset", "ptsd.onset", "gad.onset", "mdd.onset", "alcohol.abuse.onset", "alcohol.dep.onset", "drug.abuse.onset", "drug.dep.onset", "weight")
+ncs.sub[cols] <- lapply(ncs.sub[cols], as.numeric)
+
 
 
 
