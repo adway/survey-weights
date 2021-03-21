@@ -13,8 +13,8 @@ ncs.sub <- ncs[vars]
 
 # Suicide Attempt combined
 ncs.sub$attempt <- NA
-ncs.sub$attempt[ncs.sub$SD2=="NO" | ncs.sub$SD15=="NO" | ncs.sub$SD5=="NO" | ncs.sub$SD19=="NO"] <- 0
-ncs.sub$attempt[ncs.sub$SD5=="YES" | ncs.sub$SD19=="YES"] <- 1
+ncs.sub$attempt[ncs.sub$SD2=="NO" | ncs.sub$SD15=="NO" | ncs.sub$SD6=="NO" | ncs.sub$SD19=="NO"] <-  0 
+ncs.sub$attempt[ncs.sub$SD6=="YES" | ncs.sub$SD19=="YES"] <- 1
 
 # Date of last suicide attempt combination
 ncs.sub$last.attempt <- NA
@@ -65,6 +65,9 @@ ncs.sub$drug.dep.onset[ncs.sub$drug.dep.onset=="4 OR LESS"] <- "4"
 cols <- c("last.attempt", "panic.onset", "agoraphobia.onset", "specific.phobia.onset", "social.phobia.onset", "ptsd.onset", "gad.onset", "mdd.onset", "alcohol.abuse.onset", "alcohol.dep.onset", "drug.abuse.onset", "drug.dep.onset", "weight")
 ncs.sub[cols] <- lapply(ncs.sub[cols], as.numeric)
 
+# Remove people with missing data on suicide attempts
+length(which(ncs.sub$attempt==0 & is.na(ncs.sub$last.attempt)==FALSE)) # -- Check for people who DIDN'T attempt suicide but DO have an age of last attempt. None.
+length(which(ncs.sub$attempt==1 & is.na(ncs.sub$last.attempt)==TRUE)) # -- Check for people who DID attempt but DON'T have an age of last attempt. 58.
 
 
 
