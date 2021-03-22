@@ -69,9 +69,27 @@ ncs.sub[cols] <- lapply(ncs.sub[cols], as.numeric)
 length(which(ncs.sub$attempt==0 & !is.na(ncs.sub$last.attempt))) # -- Check for people who DIDN'T attempt suicide but DO have an age of last attempt. None.
 length(which(ncs.sub$attempt==1 & is.na(ncs.sub$last.attempt))) # -- Check for people who DID attempt but DON'T have an age of last attempt. 58.
 
+# Remove those with missing data on suicide attempts 
+ncs.sub <- ncs.sub %>% filter(!is.na(attempt))
 
+# Remove those who have attempted suicide but don't have age data
+ncs.sub <- ncs.sub[!(ncs.sub$attempt==1 & is.na(ncs.sub$last.attempt)),] # -58 observations
 
+# Remove those people with missing data on any mental disorder
+ncs.sub <- ncs.sub %>% drop_na(panic, agoraphobia, specific.phobia, social.phobia, ptsd, gad, mdd, alcohol.abuse, alcohol.dep, drug.abuse, drug.dep) # -0 observations
 
+# Remove those people with disorder but no age data
+ncs.sub <- ncs.sub[!(ncs.sub$panic==1 & is.na(ncs.sub$panic.onset)),] # -0
+ncs.sub <- ncs.sub[!(ncs.sub$agoraphobia==1 & is.na(ncs.sub$agoraphobia.onset)),] # -0
+ncs.sub <- ncs.sub[!(ncs.sub$specific.phobia==1 & is.na(ncs.sub$specific.phobia.onset)),] # -0
+ncs.sub <- ncs.sub[!(ncs.sub$social.phobia==1 & is.na(ncs.sub$social.phobia.onset)),] # -0
+ncs.sub <- ncs.sub[!(ncs.sub$ptsd == 1 & is.na(ncs.sub$ptsd.onset)),] # -0
+ncs.sub <- ncs.sub[!(ncs.sub$gad == 1 & is.na(ncs.sub$gad.onset)),] # -0
+ncs.sub <- ncs.sub[!(ncs.sub$mdd == 1 & is.na(ncs.sub$mdd.onset)),] # -0
+ncs.sub <- ncs.sub[!(ncs.sub$alcohol.abuse == 1 & is.na(ncs.sub$alcohol.abuse.onset)),] # -0
+ncs.sub <- ncs.sub[!(ncs.sub$alcohol.dep == 1 & is.na(ncs.sub$alcohol.dep.onset)),] # -0
+ncs.sub <- ncs.sub[!(ncs.sub$drug.abuse == 1 & is.na(ncs.sub$drug.abuse.onset)),] # -0
+ncs.sub <- ncs.sub[!(ncs.sub$drug.dep==1 & is.na(ncs.sub$drug.dep.onset)),]
 
 
 
