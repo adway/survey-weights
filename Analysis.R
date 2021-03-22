@@ -1,9 +1,12 @@
 library(Hmisc)
 library(tidyr)
-library(ranger)
+library(randomForest)
 library(pROC)
 library(dplyr)
 library(readr)
+library(caret)
+library(DMwR)
+
 
 ncs <- spss.get("./data/DS0002/20240-0002-Data.sav", use.value.labels=TRUE)
 
@@ -110,3 +113,23 @@ ncs.final <- ncs.sub[vars]
 vars <- c("panic1", "agoraphobia1", "specific.phobia1", "social.phobia1", "ptsd1", "gad1", "mdd1", "alcohol.abuse1", "alcohol.dep1", "drug.abuse1", "drug.dep1", "attempt")
 ncs.final[vars] <- lapply(ncs.final[vars], factor)
 ncs.final$weight <- as.numeric(ncs.final$weight)
+
+# Training and testing sets
+index <- createDataPartition(ncs.final$attempt, p = 0.8, list = FALSE)
+train_data <- ncs.final[index, ]
+test_data <- ncs.final[-index, ]
+train_data.balanced <- SMOTE(attempt ~ panic1 + agoraphobia1 + specific.phobia1 + social.phobia1 + ptsd1 + gad1 + mdd1
+                             + alcohol.abuse1 + alcohol.dep1 + drug.abuse1 + drug.dep1, train_data, k = 12, perc.over = 60, perc.under = 200)
+
+
+# Run the forest
+rf <- randomForest(attempt ~ panic1 + agoraphobia1 + specific.phobia1 + social.phobia1 + ptsd1 + gad1 + mdd1
+             + alcohol.abuse1 + alcohol.dep1 + drug.abuse1 + drug.dep1, data = train_data.balanced, split = 'gini')
+test_data$predicted.response <- predict(rf, test_data, type = "class")
+cm <- confusionMatrix(test_data$predicted.response, as.factor(test_data$attempt), positive = '1')
+cm
+
+
+
+
+
