@@ -91,12 +91,22 @@ ncs.sub <- ncs.sub[!(ncs.sub$alcohol.dep == 1 & is.na(ncs.sub$alcohol.dep.onset)
 ncs.sub <- ncs.sub[!(ncs.sub$drug.abuse == 1 & is.na(ncs.sub$drug.abuse.onset)),] # -0
 ncs.sub <- ncs.sub[!(ncs.sub$drug.dep==1 & is.na(ncs.sub$drug.dep.onset)),]
 
+# New Variables coded to show whether disorder onset preceeded suicide attempt
+ncs.sub$panic1 <- ifelse(ncs.sub$panic==1 & ((ncs.sub$panic.onset <= ncs.sub$last.attempt) | (ncs.sub$attempt==0)), 1, 0)
+ncs.sub$agoraphobia1 <- ifelse(ncs.sub$agoraphobia==1 & ((ncs.sub$agoraphobia.onset <= ncs.sub$last.attempt) | (ncs.sub$attempt==0)), 1, 0)
+ncs.sub$specific.phobia1 <- ifelse(ncs.sub$specific.phobia==1 & ((ncs.sub$specific.phobia.onset <= ncs.sub$last.attempt) | (ncs.sub$attempt==0)), 1, 0)
+ncs.sub$social.phobia1 <- ifelse(ncs.sub$social.phobia==1 & ((ncs.sub$social.phobia.onset <= ncs.sub$last.attempt) | (ncs.sub$attempt==0)), 1, 0)
+ncs.sub$ptsd1 <- ifelse(ncs.sub$ptsd==1 & ((ncs.sub$ptsd.onset <= ncs.sub$last.attempt) | (ncs.sub$attempt==0)), 1, 0)
+ncs.sub$gad1 <- ifelse(ncs.sub$gad==1 & ((ncs.sub$gad.onset <= ncs.sub$last.attempt) | (ncs.sub$attempt==0)), 1, 0)
+ncs.sub$mdd1 <- ifelse(ncs.sub$mdd==1 & ((ncs.sub$mdd.onset <= ncs.sub$last.attempt) | (ncs.sub$attempt==0)), 1, 0)
+ncs.sub$alcohol.abuse1 <- ifelse(ncs.sub$alcohol.abuse==1 & ((ncs.sub$alcohol.abuse.onset <= ncs.sub$last.attempt) | (ncs.sub$attempt==0)), 1, 0)
+ncs.sub$alcohol.dep1 <- ifelse(ncs.sub$alcohol.dep==1 & ((ncs.sub$alcohol.dep.onset <= ncs.sub$last.attempt) | (ncs.sub$attempt==0)), 1, 0)
+ncs.sub$drug.abuse1 <- ifelse(ncs.sub$drug.abuse==1 & ((ncs.sub$drug.abuse.onset <= ncs.sub$last.attempt) | (ncs.sub$attempt==0)), 1, 0)
+ncs.sub$drug.dep1 <- ifelse(ncs.sub$drug.dep==1 & ((ncs.sub$drug.dep.onset <= ncs.sub$last.attempt) | (ncs.sub$attempt==0)), 1, 0)
 
-
-
-
-
-
-
-
-
+# Pull final variables for analysis
+vars <- c("panic1", "agoraphobia1", "specific.phobia1", "social.phobia1", "ptsd1", "gad1", "mdd1", "alcohol.abuse1", "alcohol.dep1", "drug.abuse1", "drug.dep1", "attempt", "weight")
+ncs.final <- ncs.sub[vars]
+vars <- c("panic1", "agoraphobia1", "specific.phobia1", "social.phobia1", "ptsd1", "gad1", "mdd1", "alcohol.abuse1", "alcohol.dep1", "drug.abuse1", "drug.dep1", "attempt")
+ncs.final[vars] <- lapply(ncs.final[vars], factor)
+ncs.final$weight <- as.numeric(ncs.final$weight)
